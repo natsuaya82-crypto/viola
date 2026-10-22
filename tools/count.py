@@ -1,4 +1,4 @@
-"""draft/ の各場面の字数を数える。見出し行と区切り線までのヘッダ部分は数えない。"""
+"""draft/ の各場面の字数を数える。見出し行と区切り線までのヘッダ部分と、パーツの目印（HTMLコメント）は数えない。"""
 import glob
 import re
 
@@ -7,7 +7,8 @@ TARGETS = {1: 3500, 2: 4500, 3: 4500, 4: 6000, 5: 4000, 6: 4500}
 
 def body(text):
     parts = text.split("\n---\n", 1)
-    return parts[1] if len(parts) == 2 else ""
+    text = parts[1] if len(parts) == 2 else ""
+    return re.sub(r"<!--.*?-->", "", text, flags=re.S)
 
 
 total = 0
